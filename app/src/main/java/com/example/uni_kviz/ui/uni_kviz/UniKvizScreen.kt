@@ -42,7 +42,7 @@ object UniKvizDestination : NavigationDestination {
 }
 
 @Composable
-fun UniKvizScreen(navigateBack: () -> Unit) {
+fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
     val uniKvizViewModel = viewModel(modelClass=UniKvizViewModel::class.java)
 
     val stanjeKviza = uniKvizViewModel.stanje
@@ -61,7 +61,7 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
 
         val bluish = Color(4, 53, 85, 255)
 
-        ProgressBar(currentQuestionIndex = trenutnoPitanje.value)
+        ProgressBar(trenutnoPitanje = trenutnoPitanje.value, brojPitanja = stanjeKviza.pitanja.size)
 
         Spacer(modifier = Modifier.height(64.dp))
 
@@ -82,6 +82,8 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
+                if(trenutnoPitanje.value == stanjeKviza.pitanja.size)
+                    navigateEndScreen()
                 trenutnoPitanje.value = trenutnoPitanje.value + 1
                 // Logika za odabir drugog odgovora ("Da")
             }
@@ -223,13 +225,12 @@ fun ActionButton(
 
 @Composable
 fun ProgressBar(
-    currentQuestionIndex: Int
+    trenutnoPitanje: Int,
+    brojPitanja: Int
+
 ) {
-
-    val questions = 19;
-
     LinearProgressIndicator(
-        progress = (currentQuestionIndex + 1).toFloat() / questions,
+        progress = (trenutnoPitanje).toFloat() / brojPitanja,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)

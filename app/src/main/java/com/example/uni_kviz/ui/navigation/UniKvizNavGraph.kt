@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.uni_kviz.ui.about.AboutUniKvizDestination
 import com.example.uni_kviz.ui.about.AboutUniKvizScreen
 import com.example.uni_kviz.ui.end.EndDestination
+import com.example.uni_kviz.ui.end.EndScreen
 import com.example.uni_kviz.ui.home.HomeDestination
 import com.example.uni_kviz.ui.home.HomeScreen
 import com.example.uni_kviz.ui.how_to_play.HowToPlayDestination
@@ -34,7 +35,14 @@ fun UniKvizNavHost(
         }
         composable(route = UniKvizDestination.route) {
             UniKvizScreen(
-                navigateBack = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                navigateEndScreen = {navController.navigate(EndDestination.route)}
+            )
+        }
+        composable(route = EndDestination.route) {
+            EndScreen(
+                navigateBack = { navController.navigate(HomeDestination.route)  }
+
             )
         }
         composable(route = HowToPlayDestination.route) {
