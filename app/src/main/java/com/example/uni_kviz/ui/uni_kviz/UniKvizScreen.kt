@@ -46,6 +46,8 @@ object UniKvizDestination : NavigationDestination {
 fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
 
     val uniKvizViewModel = viewModel(modelClass=UniKvizViewModel::class.java)
+    val showDialog2 = remember { mutableStateOf(false) }
+    val bluish = Color(4, 53, 85, 255)
 
     val stanjeKviza = uniKvizViewModel.stanje
 
@@ -56,6 +58,41 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
 //    }
 
     val trenutnoPitanje = remember { mutableStateOf(1) }
+
+    if (showDialog2.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog2.value = false },
+            title = { Text("UniKviz") },
+            text = { Text("Imamo odgovor za Vas, želite li možda precizniji odgovor?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDialog2.value = false
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = bluish,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "DA")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showDialog2.value = false;
+                        navigateEnd()},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = bluish,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "NE")
+                }
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -87,6 +124,7 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
         Spacer(modifier = Modifier.height(64.dp))
 
         AnswerButtons(onFirstButtonClick = {
+
 //            runBlocking{
 //             launch{ hello()}
 //            }
@@ -96,8 +134,10 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
+                if(trenutnoPitanje.value == 10)
+                    showDialog2.value = true
                 if(trenutnoPitanje.value == stanjeKviza.pitanja.size)
-                    navigateEndScreen()
+                    navigateEnd()
                 trenutnoPitanje.value = trenutnoPitanje.value + 1
                 // Logika za odabir drugog odgovora ("Da")
             }
