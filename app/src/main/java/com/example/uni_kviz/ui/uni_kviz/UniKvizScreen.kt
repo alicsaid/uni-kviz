@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,14 +44,17 @@ object UniKvizDestination : NavigationDestination {
 
 @Composable
 fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
+
     val uniKvizViewModel = viewModel(modelClass=UniKvizViewModel::class.java)
 
     val stanjeKviza = uniKvizViewModel.stanje
-    suspend fun hello(){
-        uniKvizViewModel.dodajPitanja()
-        uniKvizViewModel.dodajFakultete()
-        uniKvizViewModel.ubacivanjeBodova()
-    }
+
+//    suspend fun hello(){
+//        uniKvizViewModel.dodajPitanja()
+//        uniKvizViewModel.dodajFakultete()
+//        uniKvizViewModel.ubacivanjeBodova()
+//    }
+
     val trenutnoPitanje = remember { mutableStateOf(1) }
 
     Column(
@@ -70,16 +74,25 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
         LazyColumn(){
             items(stanjeKviza.pitanja){
                 item -> if(trenutnoPitanje.value == item.pitanje_id)
-                    Text(item.pitanje)
+                    Text( item.pitanje,
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
             }
         }
 
         Spacer(modifier = Modifier.height(64.dp))
 
         AnswerButtons(onFirstButtonClick = {
-            runBlocking{
-             launch{ hello()}
-            }
+//            runBlocking{
+//             launch{ hello()}
+//            }
+                if(trenutnoPitanje.value == stanjeKviza.pitanja.size)
+                    navigateEndScreen()
+                trenutnoPitanje.value = trenutnoPitanje.value + 1
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
@@ -95,7 +108,6 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
         )
     }
 }
-
 
 @Composable
 fun AnswerButtons(
@@ -180,7 +192,7 @@ fun ActionButton(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "Da")
+                    Text(text = "DA")
                 }
             },
             dismissButton = {
@@ -192,7 +204,7 @@ fun ActionButton(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "No")
+                    Text(text = "NE")
                 }
             }
         )
@@ -228,7 +240,6 @@ fun ActionButton(
 fun ProgressBar(
     trenutnoPitanje: Int,
     brojPitanja: Int
-
 ) {
     LinearProgressIndicator(
         progress = (trenutnoPitanje).toFloat() / brojPitanja,
