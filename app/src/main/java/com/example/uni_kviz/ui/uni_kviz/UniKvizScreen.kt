@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -27,8 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.uni_kviz.R
 import com.example.uni_kviz.ui.navigation.NavigationDestination
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 object UniKvizDestination : NavigationDestination {
     override val route = "uni-kviz"
@@ -37,6 +43,12 @@ object UniKvizDestination : NavigationDestination {
 
 @Composable
 fun UniKvizScreen(navigateBack: () -> Unit) {
+    val uniKvizViewModel = viewModel(modelClass=UniKvizViewModel::class.java)
+
+    val stanjeKviza = uniKvizViewModel.stanje
+    suspend fun hello(){
+        uniKvizViewModel.dodajPitanja()
+    }
     val currentQuestionIndex = remember { mutableStateOf(0) }
 
     Column(
@@ -53,17 +65,25 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        Text(
-            text = "Da li ste više zainteresirani za prirodne nego za društvene znanosti?",
-            modifier = Modifier.padding(bottom = 16.dp),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
+        LazyColumn( ){
+            items(stanjeKviza.pitanja){item->
+                Text(
+                    text = item.pitanje,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+            )}
+
+        }
 
         Spacer(modifier = Modifier.height(64.dp))
 
         AnswerButtons(onFirstButtonClick = {
+            runBlocking{
+             launch{ hello()}
+            }
+
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
