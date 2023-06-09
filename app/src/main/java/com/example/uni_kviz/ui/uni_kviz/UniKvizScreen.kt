@@ -88,7 +88,8 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
             },
             onSecondButtonClick = {
                 // Logika za odabir drugog odgovora ("Da")
-            })
+            }
+        )
 
         ActionButton(
             navigateBack = { navigateBack() }
@@ -200,7 +201,7 @@ fun ActionButton(
 
     Row(modifier = Modifier.padding(top = 16.dp)) {
 
-        val darkRed = Color(128, 0, 0)
+        val darkRed = Color(229, 57, 53, 255)
 
         Button(
             onClick = { showDialog.value = true },
@@ -229,10 +230,10 @@ fun ProgressBar(
     currentQuestionIndex: Int
 ) {
 
-    val questions = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    val questions = 19;
 
     LinearProgressIndicator(
-        progress = (currentQuestionIndex + 1).toFloat() / questions.size,
+        progress = (currentQuestionIndex + 1).toFloat() / questions,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)

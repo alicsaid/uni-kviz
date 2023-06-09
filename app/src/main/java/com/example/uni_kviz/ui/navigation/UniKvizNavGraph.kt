@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.uni_kviz.ui.about.AboutUniKvizDestination
 import com.example.uni_kviz.ui.about.AboutUniKvizScreen
+import com.example.uni_kviz.ui.end.EndDestination
 import com.example.uni_kviz.ui.home.HomeDestination
 import com.example.uni_kviz.ui.home.HomeScreen
 import com.example.uni_kviz.ui.how_to_play.HowToPlayDestination
