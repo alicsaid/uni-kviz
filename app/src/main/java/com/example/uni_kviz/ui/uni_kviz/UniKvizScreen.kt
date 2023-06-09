@@ -48,6 +48,8 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
     val stanjeKviza = uniKvizViewModel.stanje
     suspend fun hello(){
         uniKvizViewModel.dodajPitanja()
+        uniKvizViewModel.dodajFakultete()
+        uniKvizViewModel.ubacivanjeBodova()
     }
     val trenutnoPitanje = remember { mutableStateOf(1) }
 
@@ -78,7 +80,6 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
             runBlocking{
              launch{ hello()}
             }
-
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
