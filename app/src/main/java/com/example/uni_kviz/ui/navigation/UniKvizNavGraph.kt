@@ -36,7 +36,8 @@ fun UniKvizNavHost(
         composable(route = UniKvizDestination.route) {
             UniKvizScreen(
                 navigateBack = { navController.popBackStack() },
-                navigateEndScreen = {navController.navigate(EndDestination.route)}
+                navigateController = navController,
+                route = EndDestination.route
             )
         }
         composable(route = EndDestination.route) {
@@ -57,3 +58,4 @@ fun UniKvizNavHost(
         }
     }
 }
+
