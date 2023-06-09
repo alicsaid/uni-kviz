@@ -45,3 +45,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# db queries
+# UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'table_name';
+# resetuje id pitanja na 1
+# delete from pitanje
+# brise sve iz tabele pitanja
