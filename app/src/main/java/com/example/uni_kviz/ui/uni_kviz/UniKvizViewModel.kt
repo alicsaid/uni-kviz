@@ -26,6 +26,7 @@ class UniKvizViewModel(
         getPitanja()
         getFakulteti()
     }
+
     private fun getPitanjeFakultet(){
         viewModelScope.launch(){
             implementacijaBaze.pitanjeFakultet.collectLatest {
