@@ -57,7 +57,7 @@ fun AboutUniKvizScreen(navigateBack: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Autori: Said Nedim Emin",
+                Text(text = "Autori: Said, Nedim i Emin",
                     style = TextStyle(
                         fontSize = 20.sp
                     )

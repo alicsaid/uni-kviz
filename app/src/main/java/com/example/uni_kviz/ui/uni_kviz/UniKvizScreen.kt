@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -109,13 +110,13 @@ fun UniKvizScreen(
                                 fakultetBodoviMap[fakultet.ime] = 0
                             fakultetiPokupljeni.value = true
                         }
-
                         bilaPitanja.add(trenutnoPitanje.value)
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(64.dp))
+
 
             AnswerButtons(onFirstButtonClick = {
                 /*runBlocking{
@@ -179,9 +180,6 @@ fun UniKvizScreen(
     else
         EndScreen(pobjednickiFakulteti, navigateBack)
 }
-
-
-
 
 @Composable
 fun AnswerButtons(
@@ -252,7 +250,7 @@ fun ActionButton(
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
-            title = { Text("Potvrda") },
+            title = { Text("UniKviz") },
             text = { Text("Da li ste sigurni da želite odustati?") },
             confirmButton = {
                 Button(
@@ -266,7 +264,7 @@ fun ActionButton(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "Da")
+                    Text(text = "DA")
                 }
             },
             dismissButton = {
@@ -278,7 +276,7 @@ fun ActionButton(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "No")
+                    Text(text = "NE")
                 }
             }
         )
@@ -314,7 +312,6 @@ fun ActionButton(
 fun ProgressBar(
     trenutnoPitanje: Int,
     brojPitanja: Int
-
 ) {
     LinearProgressIndicator(
         progress = (trenutnoPitanje).toFloat() / brojPitanja,
