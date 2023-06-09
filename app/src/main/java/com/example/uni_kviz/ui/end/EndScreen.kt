@@ -8,14 +8,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -55,10 +60,13 @@ fun EndScreen(navigateBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Kako igrati?") },
+                title = { Text(text = "Čestitamo") },
             )
         }
     ) {
+
+        val bluish = Color(4, 53, 85, 255)
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -70,12 +78,43 @@ fun EndScreen(navigateBack: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                Text(
+                    text = "Čestitamo. Završili ste kviz.",
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Ovo su fakulteti za Vas na osnovu vaših odgovora!",
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.padding(20.dp))
+
                 Accordion()
+
+                Spacer(modifier = Modifier.padding(20.dp))
+
                 Button(
                     onClick = { navigateBack() },
-                    modifier = Modifier.padding(top = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = bluish,
+                        contentColor = Color.White
+                    ),
+                    contentPadding = PaddingValues(12.dp)
                 ) {
-                    Text(text = "Početna")
+                    Text(text = "Početna",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
             }
         }
@@ -95,6 +134,8 @@ fun Accordion() {
             percentage = 40
         )
 
+        Spacer(modifier = Modifier.padding(10.dp))
+
         ExpandableCard(
             title = "Fakultet 2",
             titleFontWeight = FontWeight.Bold,
@@ -104,6 +145,8 @@ fun Accordion() {
             padding = 16.dp,
             percentage = 30
         )
+
+        Spacer(modifier = Modifier.padding(10.dp))
 
         ExpandableCard(
             title = "Fakultet 3",

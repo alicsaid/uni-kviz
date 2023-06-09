@@ -46,11 +46,6 @@ fun HomeScreen(
     navigateToAboutUniKviz: () -> Unit
 ) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "UniKviz") },
-            )
-        },
         content = {
             Column(
                 modifier = Modifier
