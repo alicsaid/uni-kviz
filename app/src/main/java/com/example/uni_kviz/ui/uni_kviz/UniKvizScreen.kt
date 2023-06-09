@@ -49,7 +49,7 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
     suspend fun hello(){
         uniKvizViewModel.dodajPitanja()
     }
-    val currentQuestionIndex = remember { mutableStateOf(0) }
+    val trenutnoPitanje = remember { mutableStateOf(1) }
 
     Column(
         modifier = Modifier
@@ -61,20 +61,15 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
 
         val bluish = Color(4, 53, 85, 255)
 
-        ProgressBar(currentQuestionIndex = currentQuestionIndex.value)
+        ProgressBar(currentQuestionIndex = trenutnoPitanje.value)
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        LazyColumn( ){
-            items(stanjeKviza.pitanja){item->
-                Text(
-                    text = item.pitanje,
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-            )}
-
+        LazyColumn(){
+            items(stanjeKviza.pitanja){
+                item -> if(trenutnoPitanje.value == item.pitanje_id)
+                    Text(item.pitanje)
+            }
         }
 
         Spacer(modifier = Modifier.height(64.dp))
@@ -87,6 +82,7 @@ fun UniKvizScreen(navigateBack: () -> Unit) {
                 // Logika za odabir prvog odgovora ("NE")
             },
             onSecondButtonClick = {
+                trenutnoPitanje.value = trenutnoPitanje.value + 1
                 // Logika za odabir drugog odgovora ("Da")
             }
         )
