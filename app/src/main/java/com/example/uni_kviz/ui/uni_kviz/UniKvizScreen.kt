@@ -1,6 +1,7 @@
 package com.example.uni_kviz.ui.uni_kviz
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -84,8 +85,55 @@ fun UniKvizScreen(
     val pobjednickiFakulteti = remember { mutableMapOf<String, Double>() }
     val fakultetiPokupljeni = remember{mutableStateOf(false)}
     val jeZavrsio = remember { mutableStateOf(false) }
+    val showDialog2 = remember { mutableStateOf(false) }
+    val bluish = Color(4, 53, 85, 255)
 
     bilaPitanja.add(trenutnoPitanje.value)
+
+    if (showDialog2.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog2.value = false },
+            title = { Text("Rezultat?") },
+            text = { Text(
+                text = "Imamo odgovor za Vas. Želite li možda detaljniji rezultat?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDialog2.value = false
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = bluish,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "DA")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showDialog2.value = false;
+                        val najboljiFakulteti = fakultetBodoviMap.entries
+                            .sortedByDescending { it.value }
+                            .take(3)
+                            .associate { it.key to it.value }
+                        najboljiFakulteti.forEach { (key, value) ->
+                            pobjednickiFakulteti[key] = round(value.toDouble()/(najboljiFakulteti.values.sum()) * 100)
+                        }
+                        jeZavrsio.value=true},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = bluish,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "NE")
+                }
+            }
+        )
+    }
+
+
     if(!jeZavrsio.value)
         Column(
             modifier = Modifier
@@ -104,7 +152,13 @@ fun UniKvizScreen(
             LazyColumn(){
                 items(stanjeKviza.pitanja){
                     item -> if(trenutnoPitanje.value == item.pitanje_id){
-                        Text(item.pitanje)
+                    Text( item.pitanje,
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                         if(!fakultetiPokupljeni.value){
                             for(fakultet in stanjeKviza.fakulteti)
                                 fakultetBodoviMap[fakultet.ime] = 0
@@ -127,6 +181,10 @@ fun UniKvizScreen(
                     fakultetBodoviMap[pitanjeFakultet.fakultet.ime] = fakultetBodoviMap[pitanjeFakultet.fakultet.ime]!! + 10 - pitanjeFakultet.pitanjeFakultet.bodovi
                 }
             }
+                if(jeOdgovorio.value == 10){
+                    showDialog2.value = true
+                }
+
                 if(jeOdgovorio.value == stanjeKviza.pitanja.size){
                     val najboljiFakulteti = fakultetBodoviMap.entries
                         .sortedByDescending { it.value }
@@ -153,6 +211,8 @@ fun UniKvizScreen(
                             fakultetBodoviMap[pitanjeFakultet.fakultet.ime] = fakultetBodoviMap[pitanjeFakultet.fakultet.ime]!! + pitanjeFakultet.pitanjeFakultet.bodovi
                         }
                     }
+                    if(jeOdgovorio.value == 10)
+                        showDialog2.value = true
                     if(jeOdgovorio.value == stanjeKviza.pitanja.size){
                         val najboljiFakulteti = fakultetBodoviMap.entries
                             .sortedByDescending { it.value }
@@ -396,7 +456,7 @@ fun Accordion(pobjednickiFakulteti: MutableMap<String, Double>) {
             ExpandableCard(
                 title = entry.key,
                 titleFontWeight = FontWeight.Bold,
-                description = "Opis fakulteta 1",
+                description = entry.key,
                 descriptionFontWeight = FontWeight.Normal,
                 descriptionMaxLines = 4,
                 padding = 16.dp,
