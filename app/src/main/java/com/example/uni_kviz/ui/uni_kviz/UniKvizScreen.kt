@@ -62,8 +62,9 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
     if (showDialog2.value) {
         AlertDialog(
             onDismissRequest = { showDialog2.value = false },
-            title = { Text("UniKviz") },
-            text = { Text("Imamo odgovor za Vas, želite li možda precizniji odgovor?") },
+            title = { Text("Rezultat?") },
+            text = { Text(
+                text = "Imamo odgovor za Vas. Želite li možda detaljniji rezultat?") },
             confirmButton = {
                 Button(
                     onClick = {
@@ -80,8 +81,8 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
             },
             dismissButton = {
                 Button(
-                    onClick = { showDialog2.value = false;
-                        navigateEnd()},
+                    onClick = { showDialog2.value = false
+                        navigateEndScreen()},
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = bluish,
@@ -101,8 +102,6 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        val bluish = Color(4, 53, 85, 255)
 
         ProgressBar(trenutnoPitanje = trenutnoPitanje.value, brojPitanja = stanjeKviza.pitanja.size)
 
@@ -128,6 +127,7 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
 //            runBlocking{
 //             launch{ hello()}
 //            }
+
                 if(trenutnoPitanje.value == stanjeKviza.pitanja.size)
                     navigateEndScreen()
                 trenutnoPitanje.value = trenutnoPitanje.value + 1
@@ -137,7 +137,7 @@ fun UniKvizScreen(navigateBack: () -> Unit, navigateEndScreen: ()->Unit) {
                 if(trenutnoPitanje.value == 10)
                     showDialog2.value = true
                 if(trenutnoPitanje.value == stanjeKviza.pitanja.size)
-                    navigateEnd()
+                    navigateEndScreen()
                 trenutnoPitanje.value = trenutnoPitanje.value + 1
                 // Logika za odabir drugog odgovora ("Da")
             }
@@ -218,7 +218,7 @@ fun ActionButton(
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
-            title = { Text("Potvrda") },
+            title = { Text("UniKviz") },
             text = { Text("Da li ste sigurni da želite odustati?") },
             confirmButton = {
                 Button(
