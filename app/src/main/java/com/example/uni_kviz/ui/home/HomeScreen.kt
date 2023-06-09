@@ -62,12 +62,12 @@ fun HomeScreen(
 
                 val bluish = Color(4, 53, 85, 255)
 
-//                Image(
-//                    painter = painterResource(id = R.mipmap.ic_launcher_round),
-//                    contentDescription = stringResource(id = R.string.image_content_description),
-//                    contentScale = ContentScale.Fit,
-//                    modifier = Modifier.size(172.dp)
-//                )
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+                    contentDescription = stringResource(id = R.string.image_content_description),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(172.dp)
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
